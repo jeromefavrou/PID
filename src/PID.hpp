@@ -56,7 +56,7 @@ class PID
     //F(f(t))=at*t/2+ bt + k
     //F(order)=order*t + k
     // f(t) dt = F(y)-F(x) = a/2(y*y-x*x) + b(y-x);
-    // order dt= F(y)-F(x) = order * y - order * x;
+    // order dt= F(y)-F(x) = order(y-x);
     //I x to y = f(t) dt - order dt
     
     float x=this->m_t-this->m_dt;

@@ -32,7 +32,7 @@ class PID
   {
     this->m_dir= _dir>=1?1:_dir<=-1?-1:1;  /// define the direction of system (direct or inverse action)
   }
-  
+ 
   void parameter(float _dt,float _Kp,float _Ki=.0f, float _Kd=.0f)
   {
     this->m_dt=_dt; /// set delta of time between 2 corrections /// this value may be stable (in second)

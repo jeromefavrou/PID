@@ -79,7 +79,7 @@ class PID
 
   private:
   
-  inline float square(float const & x)
+  inline float square(float x)
   {
     return x*x;
   }

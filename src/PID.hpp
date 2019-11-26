@@ -13,7 +13,7 @@ class PID
 {
   public:
   
-  PID(void):m_sensor(nullptr),m_order(m_sensor),m_Kp(1.0),m_Ki(.0),m_Kd(.0),m_dir(1),m_el(.0),m_ei(.0),m_dt(1.0)
+  PID(void):m_sensor(nullptr),m_order(m_sensor),m_Kp(1.0),m_Ki(.0),m_Kd(.0),m_dir(1),m_el(.0),m_ei(.0),m_dt(1.0),m_t(0.0)
   {
     
   }
@@ -45,16 +45,29 @@ class PID
   ///min and max can be direcly order a pwm pin if min=+-0 and max +-255 for 8 byte
   float corrector(float _min,float _max)
   {
-    float _error=(*m_order-*m_sensor)*float(m_dir);
-
-    this->m_ei+=_error*this->m_dt;
-
+    float _error=*m_order-*m_sensor; //differential error
+    
+    this->m_t+=this->m_dt; // timeout
+    
+    float a=(_error-this->m_el)/this->m_dt; //calculate derivate also last correction  f'(t)= F(at +b) =a
+    
+    float b=*m_sensor-a*this->m_t; //calculate b in f(t)=at+b
+    
+    //F(f(t))=at*t/2+ bt + k
+    //F(order)=order*t + k
+    // f(t) dt = F(y)-F(x) = a/2(y*y-x*x) + b(y-x);
+    // order dt= F(y)-F(x) = order * y - order * x;
+    //I x to y = f(t) dt - order dt
+    
+    float x=this->m_t-this->m_dt;
+    this->m_ei+=(a>>1)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x)-(*m_order*this->m_dt);//intagrate error
+    
     this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
     
-    float _correct=m_Kp*_error + m_Ki*this->m_ei + m_Kd *(_error-this->m_el)/this->m_dt;
+    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a)*float(m_dir);
     
     this->m_el=_error;
-
+    
     return _correct<_min?_min:_correct>_max?_max:_correct;
   }
 
@@ -66,14 +79,18 @@ class PID
 
   private:
   
+  inline float square(float const & x)
+  {
+    return x*x;
+  }
+  
   float * m_sensor;
   float * m_order;
 
-  float m_Kp,m_Ki,m_Kd,m_dt;
+  float m_Kp,m_Ki,m_Kd,m_dt,m_t;
   float m_el;
   float m_ei;
-  short m_dir;
-  
+  short m_dir;  
 };
 
 #endif

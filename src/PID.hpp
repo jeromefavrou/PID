@@ -6,7 +6,7 @@
 #endif
 
 #ifndef PID_version
-  #define PID_version 0x01
+  #define PID_version 0x02
 #endif
 
 class PID

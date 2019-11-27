@@ -14,6 +14,7 @@ PID	KEYWORD1
 
 
 direction	KEYWORD2
+delay	KEYWORD2
 lock_sensor	KEYWORD2
 lock_order	KEYWORD2
 parameter	KEYWORD2

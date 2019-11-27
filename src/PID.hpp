@@ -6,7 +6,7 @@
 #endif
 
 #ifndef PID_version
-  #define PID_version 0x02
+  #define PID_version 0x03
 #endif
 
 class PID
@@ -32,6 +32,7 @@ class PID
   {
     this->m_dir= _dir>=1?1:_dir<=-1?-1:1;  /// define the direction of system (direct or inverse action)
   }
+  
   void delay(float _delay)
   {
     this->m_delay=_delay; /// define the delay of system (may be > 0 )

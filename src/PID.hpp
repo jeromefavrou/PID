@@ -13,7 +13,7 @@ class PID
 {
   public:
   
-  PID(void):m_sensor(nullptr),m_order(m_sensor),m_Kp(1.0),m_Ki(.0),m_Kd(.0),m_dir(1),m_el(.0),m_ei(.0),m_dt(1.0),m_t(0.0)
+  PID(void):m_sensor(nullptr),m_order(m_sensor),m_Kp(1.0),m_Ki(.0),m_Kd(.0),m_dir(1),m_el(.0),m_ei(.0),m_dt(1.0),m_t(.0),m_delay(.0)
   {
     
   }
@@ -31,6 +31,10 @@ class PID
   void direction(short _dir)
   {
     this->m_dir= _dir>=1?1:_dir<=-1?-1:1;  /// define the direction of system (direct or inverse action)
+  }
+  void delay(float _delay)
+  {
+    this->m_delay=_delay; /// define the delay of system (may be > 0 )
   }
  
   void parameter(float _dt,float _Kp,float _Ki=.0f, float _Kd=.0f)
@@ -64,7 +68,7 @@ class PID
     
     this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
     
-    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a)*float(m_dir);
+    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a - this->m_delay)*float(m_dir) ;
     
     this->m_el=_error;
     
@@ -87,9 +91,7 @@ class PID
   float * m_sensor;
   float * m_order;
 
-  float m_Kp,m_Ki,m_Kd,m_dt,m_t;
-  float m_el;
-  float m_ei;
+  float m_Kp,m_Ki,m_Kd,m_dt,m_t, m_el,m_ei, m_delay;
   short m_dir;  
 };
 

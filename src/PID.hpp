@@ -65,7 +65,7 @@ class PID
     //I x to y = f(t) dt - order dt
     
     float x=this->m_t-this->m_dt;
-    this->m_ei+=(a>>1)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x)-(*m_order*this->m_dt);//intagrate error
+    this->m_ei+=(a/2.0)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x)-(*m_order*this->m_dt);//intagrate error
     
     this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
     

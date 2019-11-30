@@ -69,7 +69,7 @@ class PID
     
     this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
     
-    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a - this->m_delay)*float(m_dir) ;
+    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a + this->m_delay)*float(m_dir) ;
     
     this->m_el=_error;
     

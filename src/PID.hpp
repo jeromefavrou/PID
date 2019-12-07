@@ -6,7 +6,7 @@
 #endif
 
 #ifndef PID_version
-  #define PID_version 0x03
+  #define PID_version 0x04
 #endif
 
 class PID
@@ -54,7 +54,7 @@ class PID
     
     this->m_t+=this->m_dt; // timeout
     
-    float a=(_error-this->m_el)/this->m_dt; //calculate derivate also last correction  f'(t)= F(at +b) =a
+    float a=(this->m_el-_error)/this->m_dt; //calculate derivate also last correction  f'(t)= F(at +b) =a
     
     float b=*m_sensor-a*this->m_t; //calculate b in f(t)=at+b
     
@@ -65,9 +65,9 @@ class PID
     //I x to y = f(t) dt - order dt
     
     float x=this->m_t-this->m_dt;
-    this->m_ei+=(a/2.0)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x)-(*m_order*this->m_dt);//intagrate error
+    this->m_ei+=(*m_order*this->m_dt)-((a/2.0)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x));//intagrate error
     
-    this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
+    //this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
     
     float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a - this->m_delay)*float(m_dir) ;
     

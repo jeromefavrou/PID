@@ -6,7 +6,7 @@
 #endif
 
 #ifndef PID_version
-  #define PID_version 0x04
+  #define PID_version 0x05
 #endif
 
 class PID
@@ -66,10 +66,12 @@ class PID
     
     float x=this->m_t-this->m_dt;
     this->m_ei+=(*m_order*this->m_dt)-((a/2.0)*(this->square(this->m_t)-this->square(x))+b*(this->m_t-x));//intagrate error
+        
+    float lim=(_max-_min);
+    lim= lim>=0?lim:-lim; //absolute value
+    float _m_ei2=((2*lim) / (1 + exp(-(2 / lim) *this->m_ei))) - lim; //limitless of intergate part with sigmoide function V5
     
-    //this->m_ei=this->m_ei>_max?_max:this->m_ei<_min?_min:this->m_ei; //limitless of intergate part
-    
-    float _correct=(m_Kp*_error + m_Ki*this->m_ei + m_Kd * a - this->m_delay)*float(m_dir) ;
+    float _correct=(m_Kp*_error + m_Ki* m_ei2 + m_Kd * (-a) - this->m_delay)*float(m_dir) ;
     
     this->m_el=_error;
     

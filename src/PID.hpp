@@ -71,7 +71,7 @@ class PID
     lim= lim>=0?lim:-lim; //absolute value
     float _m_ei2=((2*lim) / (1 + exp(-(2 / lim) *this->m_ei))) - lim; //limitless of intergate part with sigmoide function V5
     
-    float _correct=(m_Kp*_error + m_Ki* m_ei2 + m_Kd * (-a) - this->m_delay)*float(m_dir) ;
+    float _correct=(m_Kp*_error + m_Ki* _m_ei2 + m_Kd * (-a) - this->m_delay)*float(m_dir) ;
     
     this->m_el=_error;
     

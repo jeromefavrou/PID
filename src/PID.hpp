@@ -6,7 +6,7 @@
 #endif
 
 #ifndef PID_version
-  #define PID_version 0x05
+  #define PID_version 0x06
 #endif
 
 class PID
@@ -76,6 +76,13 @@ class PID
     this->m_el=_error;
     
     return _correct<_min?_min:_correct>_max?_max:_correct;
+  }
+  
+  void reset()
+  {
+    this->m_t= .0f;
+    this->m_el= .0f;
+    this->m_ei= .0f;
   }
 
   ~PID(void)
